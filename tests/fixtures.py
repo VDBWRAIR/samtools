@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os
 from os.path import *
 from . import tdir
@@ -9,10 +11,17 @@ FIXDIR=join(THIS,'fixtures')
 def ungiz( filepath, dest=os.getcwd() ):
     ''' unpack filepath into dest '''
     import gzip
+    #import ipdb; ipdb.set_trace()
     fofile = join(dest,basename(filepath).replace('.gz',''))
+    print( fofile )
     fh = gzip.open(filepath)
-    with open(fofile,'w') as fo:
-        fo.write( fh.read() ) 
+    with open(fofile,'wb') as fo:
+        ''' py3 problem '''
+        fo.write( fh.read())
+#        try:
+#            fo.write( fh.read() ) 
+#        except TypeError:
+#            fo.write( bytes(fh.read(), 'UTF-8') ) 
 #    with gzip.open(filepath) as fh:
 #        with open(fofile,'w') as fo:
 #            fo.write( fh.read() )

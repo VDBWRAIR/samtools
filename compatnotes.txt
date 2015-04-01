@@ -12,3 +12,35 @@ ValueError: zero length field name in format
 
 
 py3: relative directories
+
+name file is not defeined 
+
+nose.proxy.AssertionError: /tmp/ngs_mappertests4u_d5th2package/tmpstpby8w0/sorted.bam was not equal to /tmp/ngs_mappertests4u_d5th2package/tmpstpby8w0/sorted.bam
+
+left = /tmp/ngs_mappertests4u_d5th2package/tmpstpby8w0/sorted.bam
+right = sorted.bam
+
+> /home/AMED/michael.panciera/projects/samtools/tests/test_bam.py(152)_fe()
+-> assert cmp( left, right, False ), "{0} was not equal to {1}".format(left,
+right)
+(Pdb) left
+'/tmp/ngs_mappertestsd3ulxjagpackage/tmpqafaskly/sorted.bam'
+(Pdb) right
+'sorted.bam'
+(Pdb) os.listdir('.')
+['unitftm9b33wtest', 'tmpqafaskly', 'unitspmii1ybtest']
+(Pdb) os.listdir('tmpqafaskly')
+['merged.bam', 'samfile.sam', 'sorted.bam', 'merged.bam.bai', 'unsorted.bam',
+'sorted.bam.bai']
+(Pdb) cmp(left, 'tmpqafaskly/sorted.bam')
+True
+ungiz is returning the wrong directory? NO.
+
+The problem is actually the file not getting written
+
+
+  \
+
+
+  needed 'wb' not just 'w'
+    with open(fofile,'wb') as fo:

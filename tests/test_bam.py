@@ -1,6 +1,6 @@
 from __future__ import absolute_import
-from subprocess import PIPE
-from subprocess import PIPE
+from __future__ import print_function
+from subprocess import PIPE, Popen
 from .imports import *
 from .fixtures import THIS, ungiz
 
@@ -52,7 +52,7 @@ class TestUnitIndexBam(Base):
         eq_( 'sorted.bam.bai', res )
 
 @patch('samtools.bam.subprocess.Popen')
-@patch(builtins_name)
+@patch(builtins_name + '.open')
 class TestUnitSortBam(Base):
     functionname = 'sortbam'
     samtools_cmd = ['samtools','sort','-f','-']
@@ -83,7 +83,7 @@ class TestUnitSortBam(Base):
             assert False, "Did not raise value error on invalid output file"
 
 @patch('samtools.bam.subprocess.Popen')
-@patch(builtins_name)
+@patch(builtins_name + '.open')
 class TestUnitSamToBam(Base):
     functionname = 'samtobam'
     samtools_cmd = ['samtools','view','-Sb','-']
@@ -150,7 +150,9 @@ class TestIntegrate(Base):
 
     def _fe( self, left, right ):
         from filecmp import cmp
-        assert cmp( left, right, False ), "{0} was not equal to {0}".format(left, right)
+        #import ipdb; ipdb.set_trace() 
+        print("left{0}  right{1}".format(left, right))
+        assert cmp( left, right, False ), "{0} was not equal to {1}".format(left, right)
 
     def test_samtobam_pipes( self ):
         from samtools.bam import samtobam
@@ -159,13 +161,13 @@ class TestIntegrate(Base):
         cat = Popen(['cat',samfile],stdout=PIPE)
         pipe = samtobam( cat.stdout, PIPE )
         wc = Popen(['wc','-l'], stdin=pipe, stdout=PIPE)
-        elines = len(open(self.unsortedbam).readlines())-1
-        eq_( (str(elines)+'\n',None), wc.communicate() )
+        elines = len(open(self.unsortedbam, 'rb').readlines())-1
+        res = wc.communicate()
+        final = res[0].decode('utf-8'), res[1]
+        eq_( (str(elines)+'\n',None), final)
 
     def test_samtobam_files( self ):
         from samtools.bam import samtobam
-        from subprocess import Popen, PIPE
-        from StringIO import StringIO
         samfile = self.samfile
         bamfile = samtobam( samfile, 'output.bam' )
         eq_( 'output.bam', bamfile )
@@ -173,7 +175,6 @@ class TestIntegrate(Base):
 
     def test_sortbam_pipein( self ):
         from samtools.bam import sortbam
-        from subprocess import Popen, PIPE
         cat = Popen(['cat',self.unsortedbam],stdout=PIPE)
         sorted = 'expected_sorted.bam'
         bamfile = sortbam( cat.stdout, sorted )
@@ -190,7 +191,6 @@ class TestIntegrate(Base):
 
     def test_convert_then_sort( self ):
         from samtools.bam import samtobam, sortbam
-        from subprocess import PIPE, Popen
         from gzip import open
         samfile = open(self.samfile)
         cat = Popen(['cat'], stdin=samfile, stdout=PIPE)
