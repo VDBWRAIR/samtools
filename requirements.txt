@@ -3,7 +3,6 @@ nose
 mock
 biopython==1.63
 numpy==1.8.0
-matplotlib
 unittest2
 logconfig
 filehandle

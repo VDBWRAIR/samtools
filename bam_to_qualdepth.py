@@ -1,11 +1,13 @@
 #!/usr/bin/env python2
-
+from __future__ import print_function
 import sys
 import argparse
 import json
 
 import bam
 import bqd
+
+
 
 def main():
     args = parse_args()
@@ -17,7 +19,7 @@ def print_json( args ):
     pileup = bqd.mpileup( args.bamfile )
     pileup = bqd.parse_pileup( pileup )
     set_unmapped_mapped_reads( args.bamfile, pileup )
-    print json.dumps( pileup )
+    print(json.dumps( pileup ))
 
 def set_unmapped_mapped_reads( bamfile, pileup ):
     ''' add mapped/unmapped reads to json for each reference '''

@@ -63,7 +63,7 @@ def parse_pileup( pileup ):
         elif len( info ) == 6:
             ref,pos,n,depth,seq,quals = info
         else:
-            raise ValueError( "mpileup line {} is unparseable".format(line) )
+            raise ValueError( "mpileup line {0} is unparseable".format(line) )
         # Initialize new reference
         if ref not in refs:
             lastpos[ref] = 0

@@ -1,4 +1,7 @@
-from imports import *
+from __future__ import absolute_import
+from subprocess import PIPE
+from subprocess import PIPE
+from .imports import *
 from .fixtures import THIS, ungiz
 
 class Base(BaseClass):
@@ -49,7 +52,7 @@ class TestUnitIndexBam(Base):
         eq_( 'sorted.bam.bai', res )
 
 @patch('samtools.bam.subprocess.Popen')
-@patch('__builtin__.open')
+@patch(builtins_name)
 class TestUnitSortBam(Base):
     functionname = 'sortbam'
     samtools_cmd = ['samtools','sort','-f','-']
@@ -72,7 +75,6 @@ class TestUnitSortBam(Base):
         eq_( res, 'file' )
 
     def test_output_other_fails(self, open_mock, popen_mock):
-        from subprocess import PIPE
         try:
             res = self._C( 'file.sam', PIPE )
         except ValueError as e:
@@ -81,7 +83,7 @@ class TestUnitSortBam(Base):
             assert False, "Did not raise value error on invalid output file"
 
 @patch('samtools.bam.subprocess.Popen')
-@patch('__builtin__.open')
+@patch(builtins_name)
 class TestUnitSamToBam(Base):
     functionname = 'samtobam'
     samtools_cmd = ['samtools','view','-Sb','-']
@@ -106,7 +108,6 @@ class TestUnitSamToBam(Base):
     def test_output_other(self, open_mock, popen_mock):
         files = [Mock(name='file.sam')]
         open_mock.side_effect = files
-        from subprocess import PIPE
         open_mock.return_value = 'file'
         popen_mock.return_value.stdout = PIPE
         res = self._C( 'file.sam', PIPE )
@@ -114,7 +115,6 @@ class TestUnitSamToBam(Base):
         eq_( PIPE, res )
 
     def test_input_output_other(self, open_mock, popen_mock):
-        from subprocess import PIPE
         open_mock.return_value = 'file'
         popen_mock.return_value.stdout = PIPE
         res = self._C( PIPE, PIPE )
@@ -150,7 +150,7 @@ class TestIntegrate(Base):
 
     def _fe( self, left, right ):
         from filecmp import cmp
-        assert cmp( left, right, False ), "{} was not equal to {}".format(left, right)
+        assert cmp( left, right, False ), "{0} was not equal to {0}".format(left, right)
 
     def test_samtobam_pipes( self ):
         from samtools.bam import samtobam

@@ -1,3 +1,8 @@
+from __future__ import print_function
+import random
+import tempfile
+from . import fixtures
+from samtools.bam import indexbam
 import tempfile
 import shutil
 import os
@@ -67,7 +72,7 @@ class BaseClass( BaseTester ):
 
     @classmethod
     def run_script( self, script ):
-        print "Running {}".format(script)
+        print( "Running {0}".format(script) )
         try:
             return (0,subprocess.check_output( script, stderr=subprocess.STDOUT, shell=True ))
         except subprocess.CalledProcessError as e:
@@ -76,8 +81,6 @@ class BaseClass( BaseTester ):
     def _mock_pileup_str(self, *args):
         return '\t'.join([str(x) for x in args])
 
-import fixtures
-from samtools.bam import indexbam
 class BaseBamRef(BaseClass):
     bam = join(fixtures.THIS,'fixtures','varcaller','paired.bam.gz')
     ref = join(fixtures.THIS,'fixtures','varcaller','ref.fasta.gz')
@@ -87,7 +90,6 @@ class BaseBamRef(BaseClass):
     def setUpClass(klass):
         # Unpacks everything once so it doesn't slow down so much
         super(BaseBamRef,klass).setUpClass()
-        import tempfile
         klass.mytempdir = tempfile.mkdtemp(prefix='basebamref',suffix='test',dir=tdir)
         klass.bam = fixtures.ungiz(klass.bam,klass.mytempdir)
         klass.ref = fixtures.ungiz(klass.ref,klass.mytempdir)
@@ -96,7 +98,6 @@ class BaseBamRef(BaseClass):
     @classmethod
     def tearDownClass(klass):
         super(BaseBamRef,klass).tearDownClass()
-        import shutil
         shutil.rmtree(klass.mytempdir)
 
 class BaseBaseCaller(BaseClass):
@@ -125,7 +126,6 @@ def make_seqrec( seq, quals, id='id' ):
     return rec
 
 def random_seqs( numseqs=100 ):
-    import random
     dna = 'ATGC'
     seqs = []
     maxlen = 0.0
@@ -154,7 +154,6 @@ def rand_seqrec( seqlen, cal, car, cql, cqr ):
     from Bio.SeqRecord import SeqRecord
     from Bio.Seq import Seq
     from Bio.Alphabet import generic_dna
-    import random
     seq = None
     if isinstance( seqlen, int ):
         # Random Sequence
@@ -182,7 +181,6 @@ def rand_seqrec( seqlen, cal, car, cql, cqr ):
 
 def rand_seq( seqlen ):
     ''' return random sequence length seqlen '''
-    import random
     dna = ('A','C','G','T')
     return ''.join( [dna[random.randint(0,3)] for i in range(seqlen)] )
 

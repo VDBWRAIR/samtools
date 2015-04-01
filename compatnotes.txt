@@ -1,0 +1,14 @@
+dictionary comprehensions must become
+
+dict( (a, b)  for item in ... )
+
+zero-length format fieldj
+gzip doesn't work with conextmanager
+ValueError: zero length field name in format
+
+/{0}.*{
+
+            dict(({'color':r},{'linewidth':1}) for r in regiontypes)
+
+
+py3: relative directories

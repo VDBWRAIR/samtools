@@ -17,9 +17,7 @@ def
 
 class BamFile():
 
-    def __init__(self, bam):
-
-
+    def __init__(self, bam): 
     #index & sort can wrap bam.indexbam...
 
    def get_contents(self):
@@ -35,13 +33,6 @@ class BamFile():
        pass
 
    def get_view_iter(self, include_header=False):
-       if self._type == BAM:
-           in_stream = 
-           #TODO: samtools view 
-       else:
-           # no need to convert samfile
-           # skip the header?
-           return (line for line in self.get_file() if not (line.starswith('@') or header))
 
        pass
 
