@@ -1,0 +1,16 @@
+Reference	Position	Reference Base	Called Base
+Ref1	2	C	A
+Ref1	3	G	R
+Ref1	4	T	R
+Ref1	5	A	N
+Ref1	6	C	N
+Ref1	7	G	C
+Ref2	2	C	A
+Ref2	3	G	R
+Ref2	4	T	R
+Ref2	5	A	D
+Ref3	1	A	-
+Ref3	2	A	-
+Ref3	3	A	-
+Ref3	4	A	-
+Ref3	8	A	-

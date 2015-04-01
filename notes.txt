@@ -1,0 +1,40 @@
+bam.py also does bam stuff 
+* def samtobam( sam, outbam ):
+* def sortbam( bam, outbam ):
+* def mergebams( sortedbams, mergedbam ):
+* def indexbam( sortedbam ):
+* def get_refstats( bamfile ):
+* def bam_to_fastq(input_fh):
+
+MPileupColumn used by base_caller etc.
+
+bqd.parse_pileup (& mpileup) used by:
+bqd.bam_to_qualdepth.py
+graphsample.py
+
+bam.py
+run_bwa.py:        pairedbam = ngs_mapper.bam.sortbam( ngs_mapper.bam.samtobam( pairedsai, PIPE ), join(tdir, 'paired.bam') )
+run_bwa.py:        nonpairedbam = ngs_mapper.bam.sortbam( ngs_mapper.bam.samtobam( nonpairedsai, PIPE ), join(tdir, 'nonpaired.bam') )
+tagreads.py:from ngs_mapper.bam import sortbam, indexbam
+tagreads.py:    sortbam( b, bam )
+
+
+
+bqd.py 
+ *def mpileup( bamfile, regionstr=None ):
+ *def parse_pileup( pileup ):
+Not samtools:
+ *def get_region_type(depth, qual, gap, lowqual, lowcov):
+ *def regions_from_qualdepth(qualdepth, gap, lowqual, lowcov):
+ *def lines2d_from_regions(yval, regions, line2dargs):
+
+samtools.py
+* def view( infile, *args, **kwargs ):
+
+#TODO:
+* want a samview object & alignment/record object (samtools.SamRow)
+   > should have flag parsing
+* Want a pileup row class (samtools.MPileupColumn)
+* Want parse_pileup to use that pilleup row class (want a pileup FILE class?)
+* Want a module for converting sam to bam, getting samview, etc. (max bam.py functionality part of a ".bam/.sam" object, i.e.  this_bam.index()) (should know if it's sam or bam)
+* This should be built to mirror pysam probably
