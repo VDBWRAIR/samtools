@@ -5,7 +5,7 @@ import sys
 import json
 
 from collections import namedtuple
-from itertools import izip
+from builtins import zip
 
 from matplotlib.lines import Line2D
 
@@ -63,7 +63,7 @@ def parse_pileup( pileup ):
         elif len( info ) == 6:
             ref,pos,n,depth,seq,quals = info
         else:
-            raise ValueError( "mpileup line {} is unparseable".format(line) )
+            raise ValueError( "mpileup line {0} is unparseable".format(line) )
         # Initialize new reference
         if ref not in refs:
             lastpos[ref] = 0
@@ -156,7 +156,7 @@ def regions_from_qualdepth(qualdepth, gap, lowqual, lowcov):
     # The current region we are working on
     curregion = [0,0,'']
     # Loop through depth and avgqualities together
-    for basepos, da in enumerate(izip(qualdepth['depths'], qualdepth['avgquals']),start=1):
+    for basepos, da in enumerate(zip(qualdepth['depths'], qualdepth['avgquals']),start=1):
         # Split up the tuple
         depth, avgqual = da
         # Will hold current region type

@@ -1,0 +1,62 @@
+dictionary comprehensions must become
+
+dict( (a, b)  for item in ... )
+
+zero-length format fieldj
+gzip doesn't work with conextmanager
+ValueError: zero length field name in format
+
+/{0}.*{
+
+            dict(({'color':r},{'linewidth':1}) for r in regiontypes)
+
+
+py3: relative directories
+
+name file is not defeined 
+
+nose.proxy.AssertionError: /tmp/ngs_mappertests4u_d5th2package/tmpstpby8w0/sorted.bam was not equal to /tmp/ngs_mappertests4u_d5th2package/tmpstpby8w0/sorted.bam
+
+left = /tmp/ngs_mappertests4u_d5th2package/tmpstpby8w0/sorted.bam
+right = sorted.bam
+
+> /home/AMED/michael.panciera/projects/samtools/tests/test_bam.py(152)_fe()
+-> assert cmp( left, right, False ), "{0} was not equal to {1}".format(left,
+right)
+(Pdb) left
+'/tmp/ngs_mappertestsd3ulxjagpackage/tmpqafaskly/sorted.bam'
+(Pdb) right
+'sorted.bam'
+(Pdb) os.listdir('.')
+['unitftm9b33wtest', 'tmpqafaskly', 'unitspmii1ybtest']
+(Pdb) os.listdir('tmpqafaskly')
+['merged.bam', 'samfile.sam', 'sorted.bam', 'merged.bam.bai', 'unsorted.bam',
+'sorted.bam.bai']
+(Pdb) cmp(left, 'tmpqafaskly/sorted.bam')
+True
+ungiz is returning the wrong directory? NO.
+
+The problem is actually the file not getting written 
+
+  needed 'wb' not just 'w'
+    with open(fofile,'wb') as fo:
+
+test_samtools.py
+
+ImportError: cannot import name 'izip'
+
+from builtins import zip as izip
+
+AttributeError: 'module' object has no attribute 'izip_longest' 
+> from future.moves.itertools import filterfalse, zip_longest
+
+AttributeError: 'dict' object has no attribute 'iteritems'
+
+ImportError: No module named '__builtin__'
+AttributeError: 'map' object has no attribute 'dtype'
+from past.builtins import map
+
+nose.proxy.AssertionError: 'Read10' != b'Read10'
+* changed the test, not the output, which I couldn't tell where it was coming from
+
+

@@ -1,5 +1,7 @@
-import common
-import fixtures
+from __future__ import print_function
+from __future__ import absolute_import
+from . import common
+from . import fixtures
 
 from nose.tools import eq_, raises, ok_
 from nose.plugins.attrib import attr
@@ -7,7 +9,7 @@ from mock import MagicMock, patch, Mock, call
 
 from os.path import *
 import os
-
+builtins_name = common.get_builtins_name()
 class Base(common.BaseBaseCaller):
     modulepath = 'samtools.samtools'
 
@@ -50,7 +52,7 @@ Options: -b       output BAM
         res = self._C( self.bam )
         eq_( 'tested', res )
 
-    @patch('__builtin__.open')
+    @patch('{0}.open'.format(builtins_name))
     @patch('samtools.samtools.Popen')
     def test_inbam_outsam( self, popen, open ):
         open.return_value = 'null'
@@ -58,7 +60,7 @@ Options: -b       output BAM
         cmd = ['samtools','view',self.bam]
         popen.assert_called_with(cmd,stdout=-1)
 
-    @patch('__builtin__.open')
+    @patch('{0}.open'.format(builtins_name))
     @patch('samtools.samtools.Popen')
     def test_pipeinput( self, popen, open ):
         open.return_value = 'null'
@@ -84,8 +86,9 @@ Options: -b       output BAM
         i = 0
         for i, line in enumerate( res, 10 ):
             line = line.split()
-            print line
-            eq_( 'Read{}'.format(i), line[0] )
+            print(line)
+            ''' Should this really decode? needed for py3 '''
+            eq_( 'Read{0}'.format(i), line[0].decode('utf8') )
         eq_( 20, i )
 
 class TestProp(Base):
@@ -158,15 +161,15 @@ class TestUnitTagsToList(SamRowBase):
         )
         for c,t in types:
             if c == 'B':
-                row = self.row + 'aa:{}:'.format(c) + '1,1'
+                row = self.row + 'aa:{0}:'.format(c) + '1,1'
                 r = self._C( row )
                 eq_( ('aa',[1,1]), r.TAGS[0] )
             else:
-                row = self.row + 'aa:{}:'.format(c) + str(t(1))
+                row = self.row + 'aa:{0}:'.format(c) + str(t(1))
                 r = self._C( row )
                 if c == 'H':
                     t = str
-                ok_( isinstance( r.TAGS[0][1], t ), "Expected {} to be a {} but got {}".format(c,t,type(r.TAGS[0][1])) )
+                ok_( isinstance( r.TAGS[0][1], t ), "Expected {0} to be a {1} but got {2}".format(c,t,type(r.TAGS[0][1])) )
             ok_( c in r._tags, "Did not set the correct field type" )
 
     def test_multi( self ):
@@ -181,7 +184,7 @@ class MpileupBase(Base):
 class TestMpileup(MpileupBase):
     functionname = 'mpileup'
 
-    @patch('__builtin__.open')
+    @patch('{0}.open'.format(builtins_name))
     @patch('samtools.samtools.Popen')
     def test_unit_popencall( self, popen, open ):
         open.return_value = 'null'
@@ -210,7 +213,7 @@ class TestMpileup(MpileupBase):
     @patch('samtools.samtools.Popen')
     def test_testbam_all_refs(self, mock_popen):
         _all = []
-        for ref, piles in self.mpileups.iteritems():
+        for ref, piles in self.mpileups.items():
             for pile in piles:
                 _all.append(pile)
         mock_popen.return_value.stdout = _all

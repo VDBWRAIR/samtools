@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os
 from os.path import *
 from . import tdir
@@ -9,10 +11,13 @@ FIXDIR=join(THIS,'fixtures')
 def ungiz( filepath, dest=os.getcwd() ):
     ''' unpack filepath into dest '''
     import gzip
+    #import ipdb; ipdb.set_trace()
     fofile = join(dest,basename(filepath).replace('.gz',''))
-    with gzip.open(filepath) as fh:
-        with open(fofile,'w') as fo:
-            fo.write( fh.read() )
+    print( fofile )
+    fh = gzip.open(filepath)
+    with open(fofile,'wb') as fo:
+        ''' py3 problem '''
+        fo.write( fh.read())
 
     return fofile
 
@@ -54,7 +59,7 @@ def unpack_integrated( where ):
     os.rename( p2, join(dirname(p2),'sample1_S01_L001_R2_001_1979_01_01.fastq') )
 
     from glob import glob
-    expected = {basename(file).replace('.gz',''):ungiz(file,where) for file in glob( join(ipath,'*.gz') )}
+    expected = dict((basename(file).replace('.gz',''), ungiz(file,where)) for file, file in glob( join(ipath,'*.gz') ))
 
     expected['NP'] = np
     expected['P'] = (p1,p2)

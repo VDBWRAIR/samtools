@@ -1,6 +1,8 @@
 from subprocess import Popen, PIPE
+from past.builtins import map
 import numpy as np
-import itertools
+#import itertools
+from future.moves import itertools
 import re
 
 def view( infile, *args, **kwargs ):
@@ -105,7 +107,7 @@ class SamRow(object):
             elif typ == 'B':
                 value = [int(x) for x in val.split(',')]
             else:
-                raise ValueError("{} is not a supported field type".format(typ))
+                raise ValueError("{0} is not a supported field type".format(typ))
 
             t.append( (name,value) )
             
@@ -140,7 +142,7 @@ def mpileup( bamfile, regionstr=None, minmq=20, minbq=25, maxd=100000 ):
     @returns file like object representing the output of mpileup
     '''
     # The command that will be executed
-    cmd = ['samtools','mpileup','-s','-q',str(minmq),'-Q',str(minbq),'-d','{}'.format(maxd)]
+    cmd = ['samtools','mpileup','-s','-q',str(minmq),'-Q',str(minbq),'-d','{0}'.format(maxd)]
     # Only include -r if regionstr is set
     if regionstr:
         cmd += ['-r',regionstr]
@@ -324,7 +326,7 @@ class MPileupColumn(object):
             Returns an iterator that zips together bases, base qualities and mapping qualities
             Since mquals sometimes may be missing izip_longest will fill it with 0's
         '''
-        return itertools.izip_longest( self.bases, self.bquals, self.mquals, fillvalue=0 )
+        return itertools.zip_longest( self.bases, self.bquals, self.mquals, fillvalue=0 )
 
     def base_stats( self ):
         '''
@@ -349,7 +351,7 @@ class MPileupColumn(object):
         assert len(bquals) == self.depth, "Somehow length of bases != length of Base Qualities"
         depth = self.depth
         stats = {'depth':depth,'mqualsum':mqualsum,'bqualsum':bqualsum}
-        for b,bq,mq in itertools.izip_longest( bases, bquals, mquals, fillvalue=0 ):
+        for b,bq,mq in itertools.zip_longest( bases, bquals, mquals, fillvalue=0 ):
             if b not in stats:
                 stats[b] = {'baseq':[],'mapq':[]}
             stats[b]['baseq'].append(bq)
@@ -375,14 +377,14 @@ def parse_regionstring( regionstr ):
     '''
     import re
     if not regionstr:
-        raise InvalidRegionString( "{} is not a valid regionstring".format(regionstr) )
+        raise InvalidRegionString( "{0} is not a valid regionstring".format(regionstr) )
     m = re.match( '(\S+):(\d+)-(\d+)', regionstr )
     if not m:
-        raise InvalidRegionString( "{} is not a valid regionstring".format(regionstr) )
+        raise InvalidRegionString( "{0} is not a valid regionstring".format(regionstr) )
 
     region = (m.group(1), int(m.group(2)), int(m.group(3)))
     if region[1] > region[2]:
-        raise InvalidRegionString( "Start cannot be > stop in a region string: {}".format(regionstr) )
+        raise InvalidRegionString( "Start cannot be > stop in a region string: {0}".format(regionstr) )
 
     return region
 

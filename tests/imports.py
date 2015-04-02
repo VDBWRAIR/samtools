@@ -1,7 +1,21 @@
+from __future__ import absolute_import
 from os.path import *
 import os
 import sys
-from cStringIO import StringIO
+try:
+   from io import StringIO
+except ImportError:
+   from cStringIO import StringIO
+
+
+PY3 = sys.version_info[0] == 3
+if PY3:
+    builtins_name = "builtins"
+    import _io
+    file = _io.TextIOWrapper
+else:
+    builtins_name = "__builtin__"
+
 import tempfile
 import shutil
 from glob import glob
@@ -15,8 +29,8 @@ from nose.plugins.attrib import attr
 
 from Bio import SeqIO
 
-import common
-import fixtures
-from fixtures import THIS
-from common import *
+from . import common
+from .common import *
+from . import fixtures
+from .fixtures import THIS
 from . import tdir

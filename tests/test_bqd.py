@@ -1,4 +1,5 @@
-from imports import *
+from .imports import *
+import types
 
 # Lazy import
 from samtools.bqd import (
@@ -12,9 +13,8 @@ class Base(BaseTester):
         pass
 
     def _make_lineargs(self, regiontypes):
-        lineargs = {
-            r:{'color':r,'linewidth':1} for r in regiontypes
-        }
+        lineargs = dict( (r, {'color':r,'linewidth':1}) for r in regiontypes)
+        
         return lineargs
 
     def _make_qualdepth(self, **kwargs):
@@ -52,7 +52,6 @@ class TestRegionsFromQualDepth(Base):
         self.qualdepth = self._make_qualdepth()
 
     def test_returns_generator_object(self):
-        import types
         r = self._C(self.qualdepth, 0, 25, 10)
         ok_( isinstance(r, types.GeneratorType), 'Did not return a Generator object' )
 
@@ -122,7 +121,6 @@ class TestLines2dFromRegion(Base):
     functionname = 'lines2d_from_regions'
 
     def test_returns_generator(self):
-        import types
         from samtools.bqd import CoverageRegion
         ok_(isinstance(
             self._C(1, [CoverageRegion(0,0,G)], {}),
