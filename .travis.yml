@@ -10,6 +10,6 @@ before_script:
     - tests/install_samtools.sh
     - export PATH=$PATH:$PWD/bin
 script: 
-    - nosetests  
+    - nosetests  --with-coverage --cover-erase --cover-package=samtools.bqd --cover-package=samtools.samtools --cover-package=samtools.bam 
 after_success:
     - coveralls
