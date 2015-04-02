@@ -9,6 +9,17 @@ import os
 from os.path import *
 from . import tdir
 import subprocess
+import sys
+
+def get_builtins_name(): 
+    PY3 = sys.version_info[0] == 3
+    if PY3:
+        builtins_name = "builtins"
+        import _io
+        file = _io.TextIOWrapper
+    else:
+        builtins_name = "__builtin__"
+    return builtins_name
 
 class BaseTester(object):
     def _C( self, *args, **kwargs ):

@@ -1,6 +1,8 @@
 from subprocess import Popen, PIPE
+from past.builtins import map
 import numpy as np
-import itertools
+#import itertools
+from future.moves import itertools
 import re
 
 def view( infile, *args, **kwargs ):
@@ -324,7 +326,7 @@ class MPileupColumn(object):
             Returns an iterator that zips together bases, base qualities and mapping qualities
             Since mquals sometimes may be missing izip_longest will fill it with 0's
         '''
-        return itertools.izip_longest( self.bases, self.bquals, self.mquals, fillvalue=0 )
+        return itertools.zip_longest( self.bases, self.bquals, self.mquals, fillvalue=0 )
 
     def base_stats( self ):
         '''
@@ -349,7 +351,7 @@ class MPileupColumn(object):
         assert len(bquals) == self.depth, "Somehow length of bases != length of Base Qualities"
         depth = self.depth
         stats = {'depth':depth,'mqualsum':mqualsum,'bqualsum':bqualsum}
-        for b,bq,mq in itertools.izip_longest( bases, bquals, mquals, fillvalue=0 ):
+        for b,bq,mq in itertools.zip_longest( bases, bquals, mquals, fillvalue=0 ):
             if b not in stats:
                 stats[b] = {'baseq':[],'mapq':[]}
             stats[b]['baseq'].append(bq)

@@ -18,13 +18,6 @@ def ungiz( filepath, dest=os.getcwd() ):
     with open(fofile,'wb') as fo:
         ''' py3 problem '''
         fo.write( fh.read())
-#        try:
-#            fo.write( fh.read() ) 
-#        except TypeError:
-#            fo.write( bytes(fh.read(), 'UTF-8') ) 
-#    with gzip.open(filepath) as fh:
-#        with open(fofile,'w') as fo:
-#            fo.write( fh.read() )
 
     return fofile
 

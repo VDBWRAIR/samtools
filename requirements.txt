@@ -7,3 +7,5 @@ unittest2
 logconfig
 filehandle
 python-coveralls 
+matplotlib
+future
